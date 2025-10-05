@@ -1,7 +1,7 @@
 {
-    "name": "lineage",
-    "version": "0.8.5",
-    "description": "",
+    "name": "origami",
+    "version": "0.1.0",
+    "description": "AI-powered tree-structured note editor with context-aware conversations",
     "scripts": {
         "dev": "node esbuild.config.mjs",
         "build": "tsc -noEmit -skipLibCheck && svelte-check --workspace src && node esbuild.config.mjs production",

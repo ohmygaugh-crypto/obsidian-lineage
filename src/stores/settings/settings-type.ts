@@ -42,6 +42,20 @@ export type LeftSidebarTab = 'pinned-cards' | 'recent-cards';
 export type RulesTab = 'global-rules' | 'document-rules';
 
 export type LinkPaneType = 'split' | 'tab';
+
+export type AIContextMode = 'cumulative' | 'isolated' | 'manual';
+export type AIAgentType = 'cursor-cli' | 'droid' | 'claude-code' | 'custom';
+
+export type AISettings = {
+    enabled: boolean;
+    agentType: AIAgentType;
+    customAgentPath: string;
+    defaultModel: string;
+    twoStageSubmission: boolean;
+    contextMode: AIContextMode;
+    showTokenEstimates: boolean;
+};
+
 export type DocumentsPreferences = Record<string, DocumentPreferences>;
 export type Settings = {
     documents: DocumentsPreferences;
@@ -73,6 +87,7 @@ export type Settings = {
         defaultDocumentFormat: LineageDocumentFormat;
         linkPaneType: LinkPaneType;
     };
+    ai: AISettings;
     styleRules: {
         documents: { [path: string]: { rules: StyleRule[] } };
         global: {

@@ -14,6 +14,10 @@
     import TreeIndex
         from 'src/view/components/container/column/components/group/components/card/components/card-buttons/tree-index-button.svelte';
     import CardStyle from './components/card-style.svelte';
+    import AIResponse from './components/ai-response.svelte';
+    import ContextPreview from './components/context-preview.svelte';
+    import { getView } from '../../../../../../container/context';
+    import { contentStore } from 'src/stores/document/derived/content-store';
 
     export let node: NodeId;
     export let editing: boolean;
@@ -33,6 +37,9 @@
     export let collapsed: boolean;
     export let hidden: boolean;
     export let alwaysShowCardButtons: boolean;
+    
+    const view = getView();
+    const content = contentStore(view, node);
     const activeStatusClasses = {
         [ActiveStatus.node]: 'active-node',
         [ActiveStatus.child]: 'active-child',
@@ -42,6 +49,18 @@
 
     let depth = 0;
     $: depth = section ? section.split('.').length - 1 : 0;
+    
+    // AI metadata
+    $: aiMetadata = $content?.aiMetadata;
+    $: aiType = aiMetadata?.type || 'content';
+    $: isStreaming = aiMetadata?.isStreaming || false;
+    $: hasError = !!aiMetadata?.error;
+    $: tokenEstimate = aiMetadata?.tokenEstimate;
+    
+    // Check if this card is in the context preview chain
+    $: docState = view.documentStore.getValue();
+    $: isInContextChain = docState.ai.highlightedContextNodes.includes(node);
+    $: showContextPreview = docState.ai.contextPreviewMode && docState.ai.previewedNodeId === node;
 </script>
 
 <div
@@ -71,6 +90,10 @@
                       : undefined,
     )}
     id={node}
+    data-ai-type={aiType}
+    data-ai-streaming={isStreaming}
+    data-ai-error={hasError}
+    data-ai-context={isInContextChain}
     use:droppable
 >
     {#if style}
@@ -82,6 +105,19 @@
         <Draggable nodeId={node} {isInSidebar}>
             <Content nodeId={node} {isInSidebar} {active} />
         </Draggable>
+    {/if}
+    
+    {#if aiType === 'response'}
+        <AIResponse nodeId={node} />
+    {/if}
+    
+    {#if showContextPreview && tokenEstimate}
+        <ContextPreview 
+            nodeId={node} 
+            tokenEstimate={tokenEstimate}
+            highlightedNodes={docState.ai.highlightedContextNodes}
+            mentionedFiles={aiMetadata?.mentionedFiles || []}
+        />
     {/if}
 
     <CardButtons

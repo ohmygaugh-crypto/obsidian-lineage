@@ -8,6 +8,7 @@ export const hotkeysLang = {
     enable_edit_mode_and_place_cursor_at_end:
         lang.hk_enable_edit_mode_and_place_cursor_at_end,
     disable_edit_mode: lang.hk_disable_edit_mode,
+    ai_context_preview_or_submit: 'AI: Preview context or submit prompt',
     add_child: lang.card_btn_add_child_node,
     add_below: lang.card_btn_add_node_below,
     add_above: lang.card_btn_add_node_above,

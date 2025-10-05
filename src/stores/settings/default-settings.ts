@@ -39,6 +39,15 @@ export const DEFAULT_SETTINGS = (): Settings => ({
         defaultDocumentFormat: 'sections',
         linkPaneType: 'tab',
     },
+    ai: {
+        enabled: false,
+        agentType: 'droid',
+        customAgentPath: '',
+        defaultModel: '',
+        twoStageSubmission: true,
+        contextMode: 'cumulative',
+        showTokenEstimates: true,
+    },
     styleRules: {
         documents: {},
         global: {

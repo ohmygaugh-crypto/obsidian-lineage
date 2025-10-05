@@ -184,6 +184,10 @@ export type SettingsActions =
           payload: {
               position: LinkPaneType;
           };
+      }
+    | {
+          type: 'settings/ai/update';
+          payload: Partial<import('./settings-type').AISettings>;
       };
 export type PersistCollapsedSectionsAction = {
     type: 'settings/document/persist-collapsed-sections';

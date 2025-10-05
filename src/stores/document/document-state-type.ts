@@ -15,6 +15,15 @@ export type DocumentMeta = {
     /** nodes that are parents*/
     groupParentIds: Set<string>;
 };
+
+export type AIState = {
+    enabled: boolean;
+    contextPreviewMode: boolean;
+    previewedNodeId: string | null;
+    highlightedContextNodes: string[];
+    activeAgentSession: string | null;
+};
+
 export type DocumentState = {
     document: LineageDocument;
     sections: Sections;
@@ -25,6 +34,7 @@ export type DocumentState = {
     meta: DocumentMeta;
     history: DocumentHistory;
     pinnedNodes: PinnedNodesState;
+    ai: AIState;
 };
 
 // document
@@ -46,9 +56,21 @@ export type NodeGroup = {
 export type NodeId = string;
 
 export type Columns = Column[];
+
+export type NodeType = 'content' | 'prompt' | 'response';
+export type AINodeMetadata = {
+    type: NodeType;
+    parentChain?: string[];
+    mentionedFiles?: string[];
+    tokenEstimate?: number;
+    isStreaming?: boolean;
+    error?: string;
+};
+
 export type Content = {
     [nodeId: string]: {
         content: string;
+        aiMetadata?: AINodeMetadata;
     };
 };
 

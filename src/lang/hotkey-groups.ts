@@ -20,6 +20,7 @@ export const hotkeyGroups = {
         'enable_edit_mode_and_place_cursor_at_end',
         'disable_edit_mode',
         'save_changes_and_exit_card',
+        'ai_context_preview_or_submit',
     ]),
     [lang.hkg_move_nodes]: new Set([
         'move_node_up',

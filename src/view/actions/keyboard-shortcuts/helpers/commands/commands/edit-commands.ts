@@ -1,6 +1,7 @@
 import { saveNodeContent } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/save-node-content';
 import { cancelChanges } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/cancel-changes';
 import { DefaultViewCommand } from 'src/view/actions/keyboard-shortcuts/helpers/commands/default-view-hotkeys';
+import { showContextPreview, submitPromptToAgent } from 'src/view/actions/ai/submit-prompt';
 
 export const editCommands = () => {
     return [
@@ -70,11 +71,67 @@ export const editCommands = () => {
                 },
             ],
         },
-
+        {
+            name: 'ai_context_preview_or_submit',
+            callback: async (view, event) => {
+                event.preventDefault();
+                
+                console.log('[Origami AI] Cmd+Enter detected');
+                
+                const aiSettings = view.plugin.settings.getValue().ai;
+                const docState = view.documentStore.getValue();
+                
+                console.log('[Origami AI] Settings:', { 
+                    enabled: aiSettings.enabled, 
+                    twoStage: aiSettings.twoStageSubmission 
+                });
+                
+                // Only handle if AI is enabled and two-stage is on
+                if (!aiSettings.enabled || !aiSettings.twoStageSubmission) {
+                    // Fall back to regular save
+                    console.log('[Origami AI] Not enabled or two-stage off, saving normally');
+                    saveNodeContent(view);
+                    return;
+                }
+                
+                const nodeId = docState.sections.section_id[docState.sections.id_section[
+                    view.viewStore.getValue().document.activeNode
+                ]] || view.viewStore.getValue().document.activeNode;
+                
+                console.log('[Origami AI] Active node:', nodeId);
+                console.log('[Origami AI] Preview mode:', docState.ai.contextPreviewMode);
+                
+                // Check if already in preview mode
+                if (docState.ai.contextPreviewMode && docState.ai.previewedNodeId === nodeId) {
+                    // Second Enter - submit
+                    console.log('[Origami AI] Stage 2: Submitting to agent...');
+                    await submitPromptToAgent(view, nodeId);
+                    saveNodeContent(view);
+                } else {
+                    // First Enter - show preview
+                    console.log('[Origami AI] Stage 1: Showing context preview...');
+                    await showContextPreview(view, nodeId);
+                }
+            },
+            hotkeys: [
+                {
+                    key: 'Enter',
+                    modifiers: ['Mod'],
+                    editorState: 'editor-on',
+                },
+            ],
+        },
         {
             name: 'disable_edit_mode',
             callback: (view) => {
                 cancelChanges(view);
+                // Also cancel AI preview if active
+                const docState = view.documentStore.getValue();
+                if (docState.ai.contextPreviewMode) {
+                    view.documentStore.dispatch({
+                        type: 'ai/context-preview/disable',
+                    });
+                }
             },
             hotkeys: [
                 { key: 'Escape', modifiers: [], editorState: 'editor-on' },

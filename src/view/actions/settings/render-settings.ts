@@ -15,8 +15,9 @@ import { ControlsBarButtons } from 'src/view/actions/settings/components/control
 import { HeadingsFontSize } from 'src/view/actions/settings/components/headings-font-size';
 import { LinkPaneType } from 'src/view/actions/settings/components/link-pane-type';
 import { LineageView } from 'src/view/view';
+import { AISettings } from 'src/view/actions/settings/components/ai-settings';
 
-export type SettingsTab = 'General' | 'Appearance' | 'Layout';
+export type SettingsTab = 'General' | 'Appearance' | 'Layout' | 'AI';
 type Tab = { element: HTMLDivElement; name: SettingsTab };
 
 const setVisibleTab = (tabs: Tab[], activeTab: SettingsTab) => {
@@ -34,10 +35,12 @@ const render = (view: LineageView, element: HTMLElement, tabs: Tab[]) => {
     const generalTab = activeDocument.createElement('div');
     const appearanceTab = activeDocument.createElement('div');
     const layoutTab = activeDocument.createElement('div');
+    const aiTab = activeDocument.createElement('div');
 
     tabs.push({ element: generalTab, name: 'General' });
     tabs.push({ element: appearanceTab, name: 'Appearance' });
     tabs.push({ element: layoutTab, name: 'Layout' });
+    tabs.push({ element: aiTab, name: 'AI' });
 
     // general
     DefaultDocumentFormat(generalTab, settingsStore);
@@ -59,8 +62,11 @@ const render = (view: LineageView, element: HTMLElement, tabs: Tab[]) => {
     CardsGap(layoutTab, settingsStore);
     CardIndentationWidth(layoutTab, settingsStore);
     LimitCardHeight(layoutTab, settingsStore);
+    
+    // ai
+    AISettings(aiTab, settingsStore);
 
-    element.append(generalTab, appearanceTab, layoutTab);
+    element.append(generalTab, appearanceTab, layoutTab, aiTab);
 };
 
 export const renderSettings = (element: HTMLElement, tab: SettingsTab) => {

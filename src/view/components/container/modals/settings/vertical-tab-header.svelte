@@ -3,7 +3,7 @@
 
     export let setActiveTab : (tab: SettingsTab)=>void
     export let activeTab: SettingsTab
-    const tabs: SettingsTab[] = ['General', 'Appearance', 'Layout']
+    const tabs: SettingsTab[] = ['General', 'Appearance', 'Layout', 'AI']
 
 </script>
 

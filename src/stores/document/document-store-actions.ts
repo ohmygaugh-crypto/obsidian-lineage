@@ -28,7 +28,7 @@ export type SavedDocument = {
     frontmatter: string;
 };
 
-export type DocumentStoreAction = DocumentAction | HistoryAction;
+export type DocumentStoreAction = DocumentAction | HistoryAction | AIAction;
 
 export type DocumentAction =
     | LoadDocumentAction
@@ -96,3 +96,6 @@ export type PinnedNodesActions =
     | LoadPinnedNodesAction;
 
 export type MetaActions = RefreshGroupParentIdsAction;
+
+// Import AI actions
+import { AIAction } from 'src/stores/document/reducers/ai-actions';

@@ -1,0 +1,72 @@
+/* AI Mode Card Styles */
+
+/* Prompt cards */
+.lineage-card[data-ai-type='prompt'] {
+    border-left: 3px solid var(--interactive-accent);
+    background-color: var(--background-primary-alt);
+}
+
+/* Response cards */
+.lineage-card[data-ai-type='response'] {
+    border-left: 3px solid var(--text-success);
+    background-color: var(--background-secondary);
+}
+
+/* Streaming response */
+.lineage-card[data-ai-streaming='true'] {
+    animation: ai-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ai-pulse {
+    0%,
+    100% {
+        border-color: var(--text-success);
+    }
+    50% {
+        border-color: var(--text-accent);
+    }
+}
+
+/* Error state */
+.lineage-card[data-ai-error='true'] {
+    border-left-color: var(--text-error);
+    background-color: var(--background-modifier-error);
+}
+
+/* Context highlight - cards in context chain */
+.lineage-card[data-ai-context='true'] {
+    outline: 2px solid var(--interactive-accent);
+    outline-offset: 2px;
+    background-color: var(--background-modifier-border);
+}
+
+/* AI mode enabled indicator */
+.ai-mode-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    padding: 2px 6px;
+    background-color: var(--interactive-accent);
+    color: var(--text-on-accent);
+    border-radius: 3px;
+    font-size: 0.75em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 10;
+}
+
+/* Token estimate badge */
+.token-estimate-badge {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    padding: 2px 6px;
+    background-color: var(--background-modifier-border);
+    color: var(--text-muted);
+    border-radius: 3px;
+    font-size: 0.7em;
+    font-family: monospace;
+    z-index: 10;
+}
+

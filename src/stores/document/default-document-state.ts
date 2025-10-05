@@ -29,4 +29,11 @@ export const defaultDocumentState = (): DocumentState => ({
     meta: {
         groupParentIds: new Set(),
     },
+    ai: {
+        enabled: false,
+        contextPreviewMode: false,
+        previewedNodeId: null,
+        highlightedContextNodes: [],
+        activeAgentSession: null,
+    },
 });

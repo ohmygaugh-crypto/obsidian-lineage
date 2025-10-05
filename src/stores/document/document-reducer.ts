@@ -35,6 +35,7 @@ import { refreshGroupParentIds } from 'src/stores/document/reducers/meta/refresh
 import { loadDocumentFromJSON } from 'src/stores/document/reducers/load-document-from-file/load-document-from-json';
 import { NO_UPDATE } from 'src/lib/store/store';
 import { sortDirectChildNodes } from 'src/stores/document/reducers/sort/sort-direct-child-nodes';
+import { aiReducer, AIAction } from 'src/stores/document/reducers/ai-actions';
 
 const updateDocumentState = (
     state: DocumentState,
@@ -152,6 +153,9 @@ const updateDocumentState = (
         return;
     } else if (action.type === 'document/meta/refresh-group-parent-ids') {
         refreshGroupParentIds(state.document.columns, state.meta);
+        return;
+    } else if (action.type.startsWith('ai/')) {
+        aiReducer(state, action as AIAction);
         return;
     }
 
